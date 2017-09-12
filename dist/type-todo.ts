@@ -47,6 +47,8 @@ class TodoService extends BaseTodo<todoItem>{
         $('#done-items').html(doneHtml);
         $('#sortable').html(undoHtml);
         $('.add-todo').val('');//remove input text
+        let itemNum = this.list.length;
+        $('.count-todos').html(itemNum.toString());
     }
 
     delete(data:todoItem){
@@ -86,18 +88,20 @@ class TodoService extends BaseTodo<todoItem>{
             var self = e.target;
             var text = $(self).parent().text();
             if($(self).prop('checked')){
-                var doneItem = this.list.filter((i)=>{return text == i.content;})[0];
+                var doneItem = this.list.filter((i)=>{return text == i.content;})[0];//filter回傳是陣列，所以選取第0項
                 this.delete(doneItem);
                 this.render();
             }
         });
-        $('.todolist').on('click','#done-items li button.remove-item' ,(evt)=>{
-            var text = $(evt.target).parent().parent().text();
-            var removeItem = this.list.filter((i)=>{return text == i.content;})[0];
+        //remove
+        $('.todolist').on('click','#done-items li button.remove-item' ,(e)=>{
+            var text = $(e.target).parent().parent().text();
+            var removeItem = this.list.filter((i)=>{return text == i.content;})[0]; 
             var index = this.list.indexOf(removeItem);
             this.list.splice(index,1) ;
             this.render();
         });
+        //all done
         $('#checkAll').on('click',e=>{
             this.list.forEach(item=>{
                 item.status = todoStatus.done;

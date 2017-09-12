@@ -51,6 +51,9 @@ var TodoService = /** @class */ (function (_super) {
         $('#done-items').html(doneHtml);
         $('#sortable').html(undoHtml);
         $('.add-todo').val(''); //remove input text
+        var itemNum = this.list.length;
+        $('.count-todos').html(itemNum.toString());
+        console.log(itemNum.toString());
     };
     TodoService.prototype["delete"] = function (data) {
         data.status = todoStatus.done;
@@ -91,18 +94,20 @@ var TodoService = /** @class */ (function (_super) {
             var self = e.target;
             var text = $(self).parent().text();
             if ($(self).prop('checked')) {
-                var doneItem = _this.list.filter(function (i) { return text == i.content; })[0];
+                var doneItem = _this.list.filter(function (i) { return text == i.content; })[0]; //filter回傳是陣列，所以選取第0項
                 _this["delete"](doneItem);
                 _this.render();
             }
         });
-        $('.todolist').on('click', '#done-items li button.remove-item', function (evt) {
-            var text = $(evt.target).parent().parent().text();
+        //remove
+        $('.todolist').on('click', '#done-items li button.remove-item', function (e) {
+            var text = $(e.target).parent().parent().text();
             var removeItem = _this.list.filter(function (i) { return text == i.content; })[0];
             var index = _this.list.indexOf(removeItem);
             _this.list.splice(index, 1);
             _this.render();
         });
+        //all done
         $('#checkAll').on('click', function (e) {
             _this.list.forEach(function (item) {
                 item.status = todoStatus.done;
