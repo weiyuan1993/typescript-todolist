@@ -47,8 +47,11 @@ class TodoService extends BaseTodo<todoItem>{
         $('#done-items').html(doneHtml);
         $('#sortable').html(undoHtml);
         $('.add-todo').val('');//remove input text
-        let itemNum = this.list.length;
-        $('.count-todos').html(itemNum.toString());
+        let remainItemNum = 0;
+        this.list.forEach(item=>{if(item.status==todoStatus.undo){
+            remainItemNum++;
+        }}) 
+        $('.count-todos').html(remainItemNum.toString());
     }
 
     delete(data:todoItem){

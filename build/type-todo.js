@@ -51,9 +51,13 @@ var TodoService = /** @class */ (function (_super) {
         $('#done-items').html(doneHtml);
         $('#sortable').html(undoHtml);
         $('.add-todo').val(''); //remove input text
-        var itemNum = this.list.length;
-        $('.count-todos').html(itemNum.toString());
-        console.log(itemNum.toString());
+        var remainItemNum = 0;
+        this.list.forEach(function (item) {
+            if (item.status == todoStatus.undo) {
+                remainItemNum++;
+            }
+        });
+        $('.count-todos').html(remainItemNum.toString());
     };
     TodoService.prototype["delete"] = function (data) {
         data.status = todoStatus.done;
